@@ -53,3 +53,8 @@ if (!function_exists('mailbox_details_view_ajax_tab')) {
     }
 
 }
+
+//install dependencies
+register_installation_hook("Mailbox", function ($item_purchase_code) {
+    include PLUGINPATH . "Mailbox/install/do_install.php";
+});
