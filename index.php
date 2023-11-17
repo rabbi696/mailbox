@@ -36,7 +36,7 @@ app_hooks()->add_filter('app_filter_lead_details_ajax_tab', 'mailbox_details_vie
 
 if (!function_exists('mailbox_details_view_ajax_tab')) {
 
-    function mailbox_details_view_ajax_tab($hook_tabs, $client_id = 0) {
+    function mailbox_details_view_ajax_tab($hook_tabs, $client_id = 1) {
         if (!$client_id) {
             return $hook_tabs;
         }
@@ -57,4 +57,15 @@ if (!function_exists('mailbox_details_view_ajax_tab')) {
 //install dependencies
 register_installation_hook("Mailbox", function ($item_purchase_code) {
     include PLUGINPATH . "Mailbox/install/do_install.php";
+});
+
+//add setting link to the plugin setting
+app_hooks()->add_filter('app_filter_action_links_of_Mailbox', function ($action_links_array) {
+    $action_links_array = array(anchor(get_uri("mailbox_settings"), app_lang("settings")));
+
+    if (get_allowed_mailboxes_ids()) {
+        $action_links_array[] = anchor(get_uri("mailbox"), app_lang("inbox"));
+    }
+
+    return $action_links_array;
 });
