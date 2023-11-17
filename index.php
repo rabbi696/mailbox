@@ -58,3 +58,10 @@ if (!function_exists('mailbox_details_view_ajax_tab')) {
 register_installation_hook("Mailbox", function ($item_purchase_code) {
     include PLUGINPATH . "Mailbox/install/do_install.php";
 });
+
+use Mailbox\Controllers\Mailbox_Updates;
+
+register_update_hook("Mailbox", function () {
+    $update = new Mailbox_Updates();
+    return $update->index();
+});
