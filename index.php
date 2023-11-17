@@ -25,3 +25,31 @@ app_hooks()->add_filter('app_filter_staff_left_menu', function ($sidebar_menu) {
 
     return $sidebar_menu;
 });
+
+app_hooks()->add_filter('app_filter_admin_settings_menu', function ($settings_menu) {
+    $settings_menu["plugins"][] = array("name" => "mailbox", "url" => "mailbox_settings");
+    return $settings_menu;
+});
+
+app_hooks()->add_filter('app_filter_client_details_ajax_tab', 'mailbox_details_view_ajax_tab');
+app_hooks()->add_filter('app_filter_lead_details_ajax_tab', 'mailbox_details_view_ajax_tab');
+
+if (!function_exists('mailbox_details_view_ajax_tab')) {
+
+    function mailbox_details_view_ajax_tab($hook_tabs, $client_id = 0) {
+        if (!$client_id) {
+            return $hook_tabs;
+        }
+
+        if (get_allowed_mailboxes_ids()) {
+            $hook_tabs[] = array(
+                "title" => app_lang('mailbox'),
+                "url" => get_uri("mailbox/clientEmails/$client_id"),
+                "target" => "tab-mailbox_client_emails"
+            );
+        }
+
+        return $hook_tabs;
+    }
+
+}
