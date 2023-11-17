@@ -54,6 +54,7 @@ if (!function_exists('mailbox_details_view_ajax_tab')) {
 
 }
 
+
 //install dependencies
 register_installation_hook("Mailbox", function ($item_purchase_code) {
     include PLUGINPATH . "Mailbox/install/do_install.php";
@@ -68,4 +69,10 @@ app_hooks()->add_filter('app_filter_action_links_of_Mailbox', function ($action_
     }
 
     return $action_links_array;
+
+use Mailbox\Controllers\Mailbox_Updates;
+
+register_update_hook("Mailbox", function () {
+    $update = new Mailbox_Updates();
+    return $update->index();
 });
